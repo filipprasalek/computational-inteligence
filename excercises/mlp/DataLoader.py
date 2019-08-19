@@ -20,3 +20,7 @@ class DataLoader:
                 record[attribute_number] = (record[attribute_number] - border_values[attribute_number][0]) / (
                             border_values[attribute_number][1] - border_values[attribute_number][0])
         return input
+
+    @staticmethod
+    def get_class_names(dataset):
+        return list(set([record[-1] for record in dataset]))
