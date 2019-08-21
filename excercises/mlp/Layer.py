@@ -25,20 +25,32 @@ class Layer:
                     neuron.connect_output(connection)
                     other_neuron.connect_input(connection)
 
+    def update_weights(self, learning_rate):
+        for neuron in self.neurons:
+            for conn in neuron.input_connections:
+                new_weight = learning_rate * neuron.delta * conn.get_other(neuron).value
+                conn.set_weight(new_weight)
+
     def __repr__(self):
         return str(self.neurons)
 
 
 class InputLayer(Layer):
-
-    def __init__(self, values):
+    def __init__(self, row):
         super().__init__()
-        self.neurons = [InputNeuron(value) for value in values]
+        self.neurons = [InputNeuron(value) for value in row]
 
+    def set_values(self, row):
+        for i in range(len(row)):
+            self.neurons[i].value = row[i]
 
 class OutputLayer(Layer):
 
-    def __init__(self, classes):
+    def __init__(self, classes, expected):
         super().__init__()
-        self.neurons = [OutputNeuron(class_name) for class_name in classes]
+        for i in range(len(expected)):
+            self.neurons.append(OutputNeuron(classes[i], expected[i]))
 
+    def set_values(self, classes):
+        for i in range(len(classes)):
+            self.neurons[i].desired = classes[i]

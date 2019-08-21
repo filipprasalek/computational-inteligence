@@ -1,5 +1,6 @@
 import random
 import string
+from math import exp
 
 
 class Neuron:
@@ -12,15 +13,6 @@ class Neuron:
         self.value = 0
         self.delta = 0
         self.weighted_sum = 0
-
-    def calculate_delta(self):
-        pass
-
-    def calculate_weighted_sum(self):
-        pass
-
-    def calculate_output_value(self):
-        pass
 
     def connect_input(self, synapse):
         self.input_connections.append(synapse)
@@ -35,6 +27,21 @@ class Neuron:
                    connection for connection in self.output_connections if
                    connection.is_connected(self, other_neuron)))
 
+    # Calculation of weighted sum
+    def activate(self):
+        self.weighted_sum = sum([conn.weight * conn.get_other(self).value for conn in self.input_connections])
+
+    def calculate_delta(self):
+        errors = sum([conn.weight * conn.get_other(self).delta for conn in self.output_connections])
+        self.delta = errors * self.transfer_derivative()
+
+    # Transfer neuron activation
+    def transfer(self):
+        self.value = 1.0 / (1.0 + exp(-self.weighted_sum))
+
+    def transfer_derivative(self):
+        return self.value * (1.0 - self.value)
+
     def __repr__(self):
         return "%d " % self.value
 
@@ -46,10 +53,17 @@ class InputNeuron(Neuron):
         self.value = value
         self.input_connections = None
 
+    def calculate_delta(self):
+        return 0
 
 class OutputNeuron(Neuron):
 
-    def __init__(self, class_name):
+    def __init__(self, class_name, desired):
         super().__init__()
         self.output_connections = None
         self.output_class = class_name
+        self.desired = desired
+
+    def calculate_delta(self):
+        self.delta = (self.desired - self.value) * self.transfer_derivative()
+
