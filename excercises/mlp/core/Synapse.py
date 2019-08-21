@@ -7,7 +7,7 @@ class Synapse:
         self.__name = ''.join(random.choice(string.ascii_lowercase) for _ in range(5))
         self.left = left
         self.right = right
-        self.weight = 1
+        self.weight = random.uniform(-1.5, 1.5)
 
     def set_weight(self, weight):
         self.weight = weight

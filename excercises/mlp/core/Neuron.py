@@ -29,7 +29,8 @@ class Neuron:
 
     # Calculation of weighted sum
     def activate(self):
-        self.weighted_sum = sum([conn.weight * conn.get_other(self).value for conn in self.input_connections])
+        bias = 1
+        self.weighted_sum = sum([conn.weight * conn.get_other(self).value for conn in self.input_connections]) + bias
 
     def calculate_delta(self):
         errors = sum([conn.weight * conn.get_other(self).delta for conn in self.output_connections])

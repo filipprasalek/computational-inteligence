@@ -1,5 +1,5 @@
 from numpy import recfromcsv
-
+from random import shuffle
 
 class DataLoader:
 
@@ -20,6 +20,14 @@ class DataLoader:
                 record[attribute_number] = (record[attribute_number] - border_values[attribute_number][0]) / (
                             border_values[attribute_number][1] - border_values[attribute_number][0])
         return input
+
+    @staticmethod
+    def randomly_prepare_data(normalized_input):
+        iterations = 10
+        normalized_input_list = list(normalized_input)
+        for _ in range(iterations):
+            shuffle(normalized_input_list)
+        return normalized_input_list
 
     @staticmethod
     def get_class_names(dataset):

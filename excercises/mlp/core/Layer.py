@@ -1,5 +1,5 @@
-from excercises.mlp.Synapse import Synapse
-from excercises.mlp.Neuron import Neuron, InputNeuron, OutputNeuron
+from excercises.mlp.core.Synapse import Synapse
+from excercises.mlp.core.Neuron import Neuron, InputNeuron, OutputNeuron
 
 class Layer:
     def __init__(self, number_of_neurons=0):
@@ -28,7 +28,7 @@ class Layer:
     def update_weights(self, learning_rate):
         for neuron in self.neurons:
             for conn in neuron.input_connections:
-                new_weight = learning_rate * neuron.delta * conn.get_other(neuron).value
+                new_weight = conn.weight + learning_rate * neuron.delta * conn.get_other(neuron).value
                 conn.set_weight(new_weight)
 
     def __repr__(self):
