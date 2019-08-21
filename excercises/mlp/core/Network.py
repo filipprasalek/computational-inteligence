@@ -6,8 +6,8 @@ class Network:
     def __init__(self, layers):
         self.layers = layers
         self.metrics = {
-            'error_per_iteration': {},
-            'guessess': 0,
+            'error_per_iteration': [],
+            'guesses': 0,
             'success': 0,
             'error': 0
         }
@@ -17,8 +17,8 @@ class Network:
 
     def reset_metrics(self):
         self.metrics = {
-            'error_per_iteration': {},
-            'guessess': 0,
+            'error_per_iteration': [],
+            'guesses': 0,
             'success': 0,
             'error': 0
         }
@@ -59,13 +59,20 @@ class Network:
                 self.forward_propagate()
                 self.backward_propagate()
                 self.update_weights(learning_rate)
+            error_sum = sum([(neuron.desired-neuron.value)**2 for neuron in self.layers[-1].neurons])
+            self.metrics['error_per_iteration'].append({i: error_sum})
 
     def predict(self, row):
+        self.metrics['guesses'] += 1
         self.set_input(row)
         self.forward_propagate()
         prediction = max(self.layers[-1].neurons, key=lambda neuron: neuron.value)
         print("Expected %s" % row[-1])
         print("Actual %s" % prediction.output_class)
+        if row[-1] == prediction.output_class:
+            self.metrics['success'] += 1
+        else:
+            self.metrics['error'] += 1
 
     def print(self):
         for layer in self.layers:
