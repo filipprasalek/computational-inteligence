@@ -37,13 +37,13 @@ vine_mapping = {
 
 layers = [
     InputLayer([1 for _ in range(number_of_inputs)]),
-    Layer(25),
+    Layer(7),
     OutputLayer(list(vine_mapping.keys()), [1 for _ in range(len(classes))])
 ]
 
 network = Network(layers)
 network.connect_layers()
-network.train(0.1, 50, training_set, vine_mapping)
+network.train(0.1, 150, training_set, vine_mapping)
 for row in test_set:
     network.predict(row)
     print("-----")

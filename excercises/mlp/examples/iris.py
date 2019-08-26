@@ -31,13 +31,14 @@ iris_mapping = {
 
 layers = [
     InputLayer([1 for _ in range(number_of_inputs)]),
-    Layer(25),
+    Layer(5),
+    Layer(3),
     OutputLayer(list(iris_mapping.keys()), [1 for _ in range(len(classes))])
 ]
 
 network = Network(layers)
 network.connect_layers()
-network.train(0.1, 50, training_set, iris_mapping)
+network.train(0.1, 100, training_set, iris_mapping)
 for row in test_set:
     network.predict(row)
     print("-----")
