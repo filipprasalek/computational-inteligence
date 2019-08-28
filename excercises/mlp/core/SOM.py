@@ -8,6 +8,7 @@ class SOM:
     def __init__(self, no_rows, no_cols, dimension):
         np.random.seed(1)
         self.som = np.random.random_sample(size=(no_rows, no_cols, dimension))
+        self.som_class = np.empty(shape=(no_rows, no_cols), dtype=object)
         self.rows = no_rows
         self.cols = no_cols
 
@@ -28,7 +29,7 @@ class SOM:
                     result = (row_index, col_index)
         return result
 
-    def self_organize(self, steps, attributes):
+    def self_organize(self, steps, attributes, classes):
         max_learn = 0.5
         max_range = self.rows + self.cols
         for step in range(steps):
@@ -43,6 +44,7 @@ class SOM:
                 for col in range(self.cols):
                     if self.__calculate_manhattan_distance(bmu_row, bmu_col, row, col) < curr_range:
                         self.som[row][col] += curr_rate * (attributes[random_vector_index] - self.som[row][col])
+                        self.som_class[row][col] = classes[random_vector_index]
 
     def draw_result(self, attributes, classes):
         mapping = np.empty(shape=(self.rows, self.cols), dtype=object)
@@ -65,4 +67,13 @@ class SOM:
 
     def get_result(self):
         return self.som
+
+    def get_result_as_list(self):
+        result = []
+        for row in range(self.rows):
+            for col in range(self.cols):
+                result.append(list(self.som[row][col]) + [str(self.som_class[row][col])])
+        return np.asarray(result)
+
+
 
