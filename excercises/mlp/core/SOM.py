@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from excercises.mlp.core.DataLoader import DataLoader
 from scipy import stats
 
 
@@ -33,8 +32,6 @@ class SOM:
         max_learn = 0.5
         max_range = self.rows + self.cols
         for step in range(steps):
-            if step % (steps / 10) == 0:
-                print("step = ", str(step))
             left_iterations_percentage = 1.0 - ((step * 1.0) / steps)
             curr_range = int(left_iterations_percentage * max_range)
             curr_rate = left_iterations_percentage * max_learn
@@ -69,25 +66,3 @@ class SOM:
     def get_result(self):
         return self.som
 
-
-iris_mapping = {
-    'Iris-setosa': 0,
-    'Iris-versicolor': 1,
-    'Iris-virginica': 2
-}
-
-rows = 5
-cols = 5
-
-raw_data = DataLoader.load_csv_data_from_file('../../../datasets/iris.data')
-normalized_data = DataLoader.normalize_data(raw_data)
-
-attributes = np.asarray([list(record)[:-1] for record in normalized_data])
-classes = np.asarray([iris_mapping[list(record)[-1]] for record in normalized_data])
-
-som = SOM(rows, cols, len(attributes[0]))
-som.self_organize(5000, attributes)
-result = som.get_result()
-som.draw_result(attributes, classes)
-
-print("END")
