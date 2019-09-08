@@ -24,7 +24,7 @@ class DataLoader:
     @staticmethod
     def randomly_prepare_data(normalized_input):
         normalized_input_list = list(normalized_input)
-        shuffle(normalized_input_list)
+        # shuffle(normalized_input_list)
         return normalized_input_list
 
     @staticmethod

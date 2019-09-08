@@ -3,6 +3,7 @@ from excercises.mlp.core.Layer import InputLayer, OutputLayer, Layer
 from excercises.mlp.core.Network import Network
 from excercises.mlp.core.SOM import SOM
 
+import matplotlib.pyplot as plt
 import numpy as np
 import random
 
@@ -55,7 +56,8 @@ layers = [
 
 network = Network(layers)
 network.connect_layers()
-network.train(0.1, 100, training_set, iris_mapping)
+iterations = 100
+network.train(0.4, iterations, training_set, iris_mapping)
 for row in test_set:
     network.predict(row)
     print("-----")
@@ -66,5 +68,11 @@ print(metrics['success'])
 print(metrics['error'])
 print("Accuracy %s" % (metrics['success'] / metrics['guesses']))
 print(metrics['error_per_iteration'])
+
+plt.plot(range(iterations), [err[1] for err in metrics['error_per_iteration']])
+plt.xlabel('Iteration')
+plt.ylabel('Mean squared error')
+plt.show()
+
 
 print("End")

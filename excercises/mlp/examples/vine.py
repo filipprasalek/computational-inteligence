@@ -4,6 +4,7 @@ from excercises.mlp.core.Network import Network
 from numpy import array
 
 import random
+import matplotlib.pyplot as plt
 
 
 dataset = '../../../datasets/vine.data'
@@ -43,6 +44,7 @@ layers = [
 
 network = Network(layers)
 network.connect_layers()
+iterations = 150
 network.train(0.1, 150, training_set, vine_mapping)
 for row in test_set:
     network.predict(row)
@@ -54,5 +56,10 @@ print(metrics['success'])
 print(metrics['error'])
 print("Accuracy %s" % (metrics['success'] / metrics['guesses']))
 print(metrics['error_per_iteration'])
+
+plt.plot(range(iterations), [err[1] for err in metrics['error_per_iteration']])
+plt.xlabel('Iteration')
+plt.ylabel('Mean squared error')
+plt.show()
 
 print("End")

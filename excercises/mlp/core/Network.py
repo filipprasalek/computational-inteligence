@@ -60,7 +60,7 @@ class Network:
                 self.backward_propagate()
                 self.update_weights(learning_rate)
             error_sum = sum([(neuron.desired-neuron.value)**2 for neuron in self.layers[-1].neurons])
-            self.metrics['error_per_iteration'].append({i: error_sum})
+            self.metrics['error_per_iteration'].append((i, error_sum))
 
     def predict(self, row):
         self.metrics['guesses'] += 1

@@ -79,7 +79,7 @@ class AGDS:
     def associate(self, iris):
         print("Looking for iris with %s" % iris.get_lookup())
         weights = self.__calculate_node_value_weights(iris)
-        self.__display_weights(weights)
+        # self.__display_weights(weights)
         similarities = self.__get_similarities(weights)
         self.__display_similarities(similarities)
         return similarities
